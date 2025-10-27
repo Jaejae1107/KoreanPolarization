@@ -6,9 +6,9 @@ execute:
   echo: true
 
 book:
-  title: "YOUR PROJECT TITLE"
+  title: "KoreanPolarization"
   author:
-    - AUTHOR1 (UNI1)
+    - Jaewon Cho (jc6618)
     - AUTHOR2 (UNI2)
   repo-url: https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME
   date: today
