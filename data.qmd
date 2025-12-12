@@ -1,6 +1,6 @@
 # Data
 
-## Description
+## Technical Description
 
 This project draws on three official data sources collected and managed by the government agencies in South Korea. Economic indicators come from the Korean Statistical Information Service (KOSIS) operated by Statistics Korea, which annually publishes province-level per capita GRDP and per capita personal income derived from administrative records and national accounts procedures. These datasets are provided in CSV format, updated once a year, containing 17 rows (one for each province) and a single numeric variable per file. Political data is the result of the counting of the 20th presidential election in 2022 provided by the National Election Commission (NEC), and the original Excel data is composed of voting districts and is confirmed after the election, and in this study, it was aggregated at the city/province level for combination with economic data. All three data are freely accessible and well documented online, and no missing values or structural problems were found during the pre-processing process. Due to the secret voting principle, there is no data on voting propensity at the age and individual levels, so this project conducts an analysis based on summary statistics at the regional level. The exact files used are provided in the project repository for full reproducibility.
 
