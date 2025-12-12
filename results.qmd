@@ -1,1 +1,648 @@
 # Results
+
+```{r}
+#| label: setup-results
+#| include: false
+
+library(tidyverse)
+library(scales)
+library(ggrepel)
+library(leaflet)
+library(htmltools)
+
+theme_set(theme_minimal(base_size = 16))
+
+# Load data
+prov <- read_csv("data/raw/merged_province_data.csv", show_col_types = FALSE) %>%
+  mutate(
+    conservative_win = conservative_margin > 0,
+    conservative_win = factor(
+      conservative_win,
+      levels = c(FALSE, TRUE),
+      labels = c("Progressive-leaning", "Conservative-leaning")
+    )
+  )
+
+cat("✓ Loaded", nrow(prov), "provinces\n")
+```
+
+```{r}
+#| label: add-coordinates
+#| include: false
+
+province_coords <- tribble(
+  ~province,   ~lat,    ~lon,
+  "Seoul",     37.5665, 126.9780,
+  "Busan",     35.1796, 129.0756,
+  "Daegu",     35.8714, 128.6014,
+  "Incheon",   37.4563, 126.7052,
+  "Gwangju",   35.1595, 126.8526,
+  "Daejeon",   36.3504, 127.3845,
+  "Ulsan",     35.5384, 129.3114,
+  "Sejong",    36.4875, 127.2817,
+  "Gyeonggi",  37.4138, 127.5183,  # Suwon (capital)
+  "Gangwon",   37.8228, 128.1555,  # Chuncheon (capital)
+  "Chungbuk",  36.6357, 127.4913,  # Cheongju (capital)
+  "Chungnam",  36.5184, 126.8000,  # Hongseong (capital)
+  "Jeonbuk",   35.7175, 127.1530,  # Jeonju (capital)
+  "Jeonnam",   34.8679, 126.9910,  # Muan (capital)
+  "Gyeongbuk", 36.4919, 128.8889,  # Andong (capital)
+  "Gyeongnam", 35.4606, 128.2132,  # Changwon (capital)
+  "Jeju",      33.4890, 126.4983   # Jeju City
+)
+
+prov_map <- prov %>%
+  left_join(province_coords, by = "province")
+
+cat("✓ All provinces have coordinates:", sum(!is.na(prov_map$lat)) == 17, "\n")
+```
+
+## Geographic Context: South Korea's Regional Landscape
+
+South Korea is divided into 17 provinces and metropolitan cities, and each region has a large area and its own administrative center and is geographically distributed. In this project, since the visualization was composed using a single coordinate (administrative center) representing each city and province, the points are arranged at regular intervals in a form that reflects the distance between regions rather than densely filling the entire map. This arrangement is not a problem of data loss or visual gap, but it's a result that naturally occurs in the aggregate characteristics of city/province data and the spatial scale of administrative districts, and is also suitable for clearly showing comparisons between regions in subsequent analysis.
+
+```{r}
+#| label: fig-income-map-points
+#| fig-cap: "Per capita income by province: circle size shows total voters, color shows income level"
+#| out-width: "100%"
+#| out-height: "650px"
+#| code-fold: true
+
+# Income color palette
+income_pal <- colorNumeric(
+  palette = "YlOrRd",
+  domain = prov_map$income_2023,
+  reverse = TRUE
+)
+
+# Create map with scaled circles
+leaflet(prov_map) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(
+    lng = ~lon,
+    lat = ~lat,
+    radius = ~sqrt(total_votes) / 150,  # Scale by voters
+    fillColor = ~income_pal(income_2023),
+    fillOpacity = 0.8,
+    color = "#333333",
+    weight = 2,
+    opacity = 1,
+    popup = ~paste0(
+      "<div style='padding: 12px; font-family: Arial; min-width: 250px;'>",
+      "<h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>", 
+      province, "</h3>",
+      "<table style='width: 100%; font-size: 14px;'>",
+      "<tr><td><b>💰 Income</b></td><td style='text-align: right;'><b>₩", 
+        format(income_2023, big.mark = ","), "K</b></td></tr>",
+      "<tr style='background: #f8f9fa;'><td><b>🏭 GRDP</b></td><td style='text-align: right;'>₩", 
+        format(grdp_2023, big.mark = ","), "K</td></tr>",
+      "<tr><td><b>👥 Voters</b></td><td style='text-align: right;'>", 
+        format(total_votes, big.mark = ","), "</td></tr>",
+      "<tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income</b></td><td style='text-align: right;'>", 
+        round(grdp_income_ratio, 2), "×</td></tr>",
+      "</table>",
+      "</div>"
+    ),
+    label = ~province,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "bold", "font-size" = "14px"),
+      direction = "auto",
+      offset = c(0, -10)
+    )
+  ) %>%
+  addLegend(
+    "bottomright",
+    pal = income_pal,
+    values = ~income_2023,
+    title = "Per Capita Income<br/>(₩1,000)",
+    opacity = 0.8,
+    labFormat = labelFormat(big.mark = ",")
+  ) %>%
+  setView(lng = 127.7, lat = 36.5, zoom = 7)
+```
+
+**Geographic pattern clear**: The map reveals a clear geographical pattern at the income level of each region in Korea. Especially, the northwest cluster, which is the metropolitan area centered on Seoul and Gyeonggi shows the highest per capita income and the large number of voters at the same time, showing bright colors and large circles. Ulsan stands out as a high-income industrial city along the southeastern coast, distinct from neighboring areas. In contrast, Gangwon Jeolla region, and some southern Gyeongsang areas are marked with relatively dark colors and small circles, indicating that the income level is low and the population size is small. Since the size of the circle is proportional to the number of voters, Seoul and major cities are particularly large, and it can be seen that the distribution of population and economic concentration appear spatially together.
+
+```{r}
+#| label: fig-voting-map-points
+#| fig-cap: "2022 Presidential Election—political lean by province. Blue = progressive (Lee), Red = conservative (Yoon)"
+#| out-width: "100%"
+#| out-height: "650px"
+#| code-fold: true
+
+# Political color palette
+voting_pal <- colorNumeric(
+  palette = c("#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0",
+              "#f7f7f7",
+              "#fddbc7", "#f4a582", "#d6604d", "#b2182b", "#67001f"),
+  domain = c(-80, 60)
+)
+
+# Create voting map
+leaflet(prov_map) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(
+    lng = ~lon,
+    lat = ~lat,
+    radius = ~sqrt(total_votes) / 150,
+    fillColor = ~voting_pal(conservative_margin),
+    fillOpacity = 0.85,
+    color = "#333333",
+    weight = 2,
+    opacity = 1,
+    popup = ~paste0(
+      "<div style='padding: 12px; font-family: Arial; min-width: 280px;'>",
+      "<h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid ",
+        ifelse(conservative_margin > 0, "#e74c3c", "#3498db"), ";'>", 
+        province, "</h3>",
+      "<table style='width: 100%; font-size: 14px;'>",
+      "<tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung</b></td>",
+        "<td style='text-align: right; padding: 6px;'><b>", round(lee_pct, 1), "%</b></td></tr>",
+      "<tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl</b></td>",
+        "<td style='text-align: right; padding: 6px;'><b>", round(yoon_pct, 1), "%</b></td></tr>",
+      "<tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin</b></td>",
+        "<td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: ",
+        ifelse(conservative_margin > 0, "#b2182b", "#2166ac"), ";'>",
+        ifelse(conservative_margin > 0, "+", ""),
+        round(conservative_margin, 1), " pp</td></tr>",
+      "<tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes</td>",
+        "<td style='text-align: right; padding: 6px;'>", 
+        format(total_votes, big.mark = ","), "</td></tr>",
+      "</table>",
+      "</div>"
+    ),
+    label = ~paste0(province, ": ", ifelse(conservative_margin > 0, "+", ""), 
+                   round(conservative_margin, 1), "pp"),
+    labelOptions = labelOptions(
+      style = list("font-weight" = "bold", "font-size" = "14px"),
+      direction = "auto",
+      offset = c(0, -10)
+    )
+  ) %>%
+  addLegend(
+    "bottomright",
+    pal = voting_pal,
+    values = c(-80, 60),
+    title = "Political Lean<br/>(Yoon - Lee)",
+    opacity = 0.85,
+    labFormat = labelFormat(suffix = " pp")
+  ) %>%
+  setView(lng = 127.7, lat = 36.5, zoom = 7)
+```
+
+**Regional polarization stark**: This map clearly illustrates Korea's strong political polarization by region in the 2022 presidential election. The southwestern region, including Gwangju, Jeonbuk, and Jeonnam, represents overwhelming large margin for progressive candidates and is expressed in dark blue, indicating a large negative margin compared to conservative candidates. In contrast, the southeastern regions such as Daegu, Gyeongbuk, Gyeongnam, Busan, and Ulsan appear in dark red, revealing a strong conservative dominance. The capital region such as Seoul, Incheon, and Gyeonggi are marked with relatively light colors, indicating that the competition between the two candidates was much fiercer. Since the size of the circle reflects the number of voters, it is possible to visually check the pattern of population concentration around the metropolitan area. Overall, this visualization reveals the east-west regional composition and political division of the Korean election landscape very intuitively.
+
+---
+
+## Q1. How unequal are regional income levels?
+
+```{r}
+#| label: fig-income-by-province
+#| fig-cap: "Per-capita income ranges from ₩22.8M (Gyeongnam) to ₩29.4M (Seoul)."
+#| warning: false
+#| fig-width: 11
+#| fig-height: 7
+#| code-fold: true
+
+prov %>%
+  mutate(province = fct_reorder(province, income_2023)) %>%
+  ggplot(aes(x = income_2023, y = province)) +
+  geom_col(width = 0.7, fill = "#999999") +
+  geom_text(
+    aes(label = comma(income_2023)),
+    hjust = -0.1,
+    size = 4,
+    fontface = "bold"
+  ) +
+  scale_x_continuous(
+    labels = label_comma(),
+    expand = expansion(mult = c(0, 0.15))
+  ) +
+  labs(
+    title = "Regional income inequality across Korea",
+    subtitle = "Seoul's income is 29% higher than lowest province",
+    x = "Per-capita income (thousands of won)",
+    y = NULL
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    plot.title = element_text(face = "bold", size = 16)
+  )
+```
+The bar graph shows a clear disparities in the level of per capita income between 17 cities and provinces across the Korea. Seoul stand out as the highest income at about ₩29.4 million, while Gyeongnam has the lowest income at about ₩22.8 million, reaching a gap of about 29%. High income regions such as Ulsan, Daejeon, Sejong, and Gyeonggi are located at the top of the distribution, reflecting the concentration of economic activity in urban areas and a relatively higher paying industries. In contrast, several rural provinces, such as Gangwon, Gyeongbuk, Jeju, and Gyeongnam, are clustered in the lower part, indicating the economic hierarchy between regions. This continuous pattern of income decline is not just a coincidence but due to structural differences between metropolitan and industrial centers and the surrounding areas, showing how Korea's spatial economic structure is reflected in the income gap by region.
+
+
+
+```{r}
+#| label: fig-grdp-vs-income
+#| fig-cap: "GRDP and income show a modest positive correlation (r = 0.46)."
+#| warning: false
+#| fig-width: 11
+#| fig-height: 8
+#| code-fold: true
+
+cor_val <- cor(prov$income_2023, prov$grdp_2023)
+
+prov %>%
+  ggplot(aes(x = income_2023, y = grdp_2023)) +
+  geom_point(
+    aes(size = lee_votes + yoon_votes, color = conservative_margin),
+    alpha = 0.7
+  ) +
+  geom_smooth(method = "lm", se = TRUE, color = "darkblue", 
+              fill = "lightblue", alpha = 0.2, linewidth = 1) +
+  geom_text_repel(
+    aes(label = province),
+    size = 3.5,
+    max.overlaps = 20
+  ) +
+  scale_size_continuous(
+    name = "Total votes",
+    labels = label_comma(),
+    range = c(3, 12)
+  ) +
+  scale_color_gradient2(
+    low = "#4a90e2",
+    mid = "gray80",
+    high = "#e74c3c",
+    midpoint = 0,
+    name = "Conservative\nmargin"
+  ) +
+  scale_x_continuous(labels = label_comma()) +
+  scale_y_continuous(labels = label_comma()) +
+  labs(
+    title = "GRDP vs. Income: Production and living standards diverge",
+    subtitle = sprintf("Correlation: r = %.2f", cor_val),
+    x = "Per-capita income (thousands of won)",
+    y = "Per-capita GRDP (thousands of won)"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    legend.position = "right"
+  )
+```
+The scatterplot compares the relationship between per-capita GRDP and per-capita income for each province, and shows that the regional "production level" and "living standard" only partially coincide. Overall, the higher the income, the higher the GRDP, but regions located large above the trend line, such as Ulsan and Chungnam, are representative examples of inconsistencies in which industrial production is very high compared to the income level of the residents. Conversely, regions with relatively low production scale, such as Gwangju and Jeonbuk, are located below the trend line, suggesting more modest production relative to income. In addition, the bubble size reflects the total number of votes in the region, and the metropolitan areas such as Seoul and Gyeonggi province appear large, and the color represents the degree of dominance of the conservative vote, so political orientation by region is visualized. Through this plot, Korea’s economic geography cannot be reduced to a single dimension that some regions are “production rich” without being equally “income rich,” and these differences interact with both population size and political orientation.
+
+---
+
+## Q2. How stark is electoral polarization?
+
+```{r}
+#| label: fig-vote-shares
+#| fig-cap: "Every province leaned decisively toward one candidate."
+#| warning: false
+#| fig-width: 11
+#| fig-height: 8
+#| code-fold: true
+
+prov %>%
+  select(province, lee_pct, yoon_pct) %>%
+  pivot_longer(
+    cols = c(lee_pct, yoon_pct),
+    names_to = "candidate",
+    values_to = "vote_pct"
+  ) %>%
+  mutate(
+    candidate = recode(
+      candidate,
+      lee_pct = "Lee Jae-myung (Progressive)",
+      yoon_pct = "Yoon Seok-youl (Conservative)"
+    ),
+    province = fct_reorder(province, vote_pct, .fun = function(x) x[1])
+  ) %>%
+  ggplot(aes(x = province, y = vote_pct, fill = candidate)) +
+  geom_col(position = "dodge", width = 0.7) +
+  geom_hline(yintercept = 50, linetype = "dashed", color = "black", linewidth = 1) +
+  scale_fill_manual(
+    values = c(
+      "Lee Jae-myung (Progressive)" = "#4a90e2",
+      "Yoon Seok-youl (Conservative)" = "#e74c3c"
+    )
+  ) +
+  scale_y_continuous(labels = label_percent(scale = 1)) +
+  coord_flip() +
+  labs(
+    title = "Not a single province approached a 50-50 split",
+    x = NULL,
+    y = "Vote share (%)",
+    fill = NULL
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    plot.title = element_text(face = "bold", size = 16),
+    legend.position = "top"
+  )
+```
+The bar chart compares the vote rates of 17 cities and provinces nationwide in the 2022 presidential election, and highlights how clear the political polarization of Korea by region is. A 50% baseline in the center of the graph shows that no region showed a competitive structure close to 50:50, and all cities and provinces are clearly inclined toward one candidate. Honam region (Jeonnam, Gwangju, Jeonbuk) overwhelmingly supported progressive candidates, while Yeongnam region (Daegu, Gyeongbuk, and Gyeongnam) showed high support for conservative candidates. Even in the capital area such as Seoul, Incheon, and Gyeonggi Province, it seems to be balanced, but in reality, there is a clear difference. These results visually confirm that Korea's regional political orientation is not an accidental change, but is structurally fixed, and that each region has a distinct ideological direction.
+
+
+```{r}
+#| label: fig-conservative-margin
+#| fig-cap: "129 percentage point spread from Jeonnam (-75pp) to Daegu (+54pp)."
+#| warning: false
+#| fig-width: 11
+#| fig-height: 8
+#| code-fold: true
+
+prov %>%
+  mutate(province = fct_reorder(province, conservative_margin)) %>%
+  ggplot(aes(x = province, y = conservative_margin, fill = conservative_win)) +
+  geom_col(width = 0.7) +
+  geom_hline(yintercept = 0, color = "black", linewidth = 1) +
+  geom_text(
+    aes(label = sprintf("%+.1f", conservative_margin)),
+    hjust = ifelse(prov$conservative_margin > 0, -0.1, 1.1),
+    size = 3.5,
+    fontface = "bold"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Progressive-leaning" = "#4a90e2",
+      "Conservative-leaning" = "#e74c3c"
+    )
+  ) +
+  scale_y_continuous(labels = label_number(suffix = " pp")) +
+  coord_flip() +
+  labs(
+    title = "129-point spread dwarfs the 0.73pp national margin",
+    x = NULL,
+    y = "Conservative advantage (percentage points)",
+    fill = NULL
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    plot.title = element_text(face = "bold", size = 16),
+    legend.position = "top"
+  )
+```
+The chart visualizes the 'conservative vote advantage' of each region in the 2022 presidential election, and shows at a glance how extremely wide ideological divide. From Jeonnam (–74.7pp) to Daegu (+53.5pp), there is a total gap of 129 points, and it can be seen that there was virtually no competitive region as neither single region was close to zero. Honam (Jeonnam, Gwangju, and Jeonbuk) is the strongest progressive dominant region in the country, while Yeongnam (Daegu, Gyeongbuk, and Gyeongnam) is the strongest conservative dominant region. Although the capital areas such as Seoul, Gyeonggi, and Incheon are relatively close to the center, there are still clear deviations. Overall, this visualization clearly demonstrates that Korea's election landscape is formed by structural regional alignment, not accidental fluctuations.
+
+
+---
+
+## Q3. Does higher income predict conservative voting?
+
+```{r}
+#| label: fig-income-vs-conservatism
+#| fig-cap: "Income weakly predicts voting"
+#| warning: false
+#| fig-width: 11
+#| fig-height: 8
+#| message: false
+#| code-fold: true
+
+cor_income <- cor(prov$income_2023, prov$conservative_margin)
+
+prov %>%
+  ggplot(aes(x = income_2023, y = conservative_margin)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
+  geom_smooth(method = "loess", se = TRUE, color = "darkblue", 
+              fill = "lightblue", alpha = 0.2, linewidth = 1.2) +
+  geom_point(
+    aes(size = lee_votes + yoon_votes, color = conservative_margin),
+    alpha = 0.7
+  ) +
+  geom_text_repel(
+    aes(label = province),
+    size = 3.5,
+    max.overlaps = 20
+  ) +
+  scale_color_gradient2(
+    low = "#4a90e2",
+    mid = "gray80",
+    high = "#e74c3c",
+    midpoint = 0,
+    guide = "none"
+  ) +
+  scale_size_continuous(
+    name = "Total votes",
+    labels = label_comma(),
+    range = c(3, 12)
+  ) +
+  scale_x_continuous(labels = label_comma()) +
+  scale_y_continuous(labels = label_number(suffix = " pp")) +
+  labs(
+    title = sprintf("Income weakly predicts voting (r = %.2f)", cor_income),
+    x = "Per-capita income (thousands of won)",
+    y = "Conservative margin (Yoon % - Lee %)"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    legend.position = "right"
+  )
+```
+The scatterplot examines whether region with higher per capita income tend to vote more conservative, revealing that there is only a very weak relationship overall. The LOESS curve shows a weak increase in conservative tendencies in Seoul and Ulsan, where the income is highest, but the overall pattern is difficult to be linear. Jeonnam, Gwangju, and Jeonbuk, which have the middle income level, show strong progressive tendencies, and some low-income regions appear conservatively, forming a U-shaped distribution. This U-shapped pattern suggests that korea's income levels do not consistently explain political orientation, and that regional identity and historical political structure have a greater influence on voting behavior. In addition, the size of the bubble visually reveals the high election influence of the capital region (Seoul and Gyeonggi) by reflecting the size of the population.
+
+
+```{r}
+#| label: fig-income-quartiles
+#| fig-cap: "Conservative vote margins across four per-capita income quartiles."
+#| warning: false
+#| fig-width: 11
+#| fig-height: 7
+#| code-fold: true
+#| message: false
+
+prov %>%
+  mutate(
+    income_q = cut(
+      income_2023,
+      breaks = quantile(income_2023, probs = seq(0, 1, 0.25)),
+      labels = c("Q1 (Lowest)", "Q2", "Q3", "Q4 (Highest)"),
+      include.lowest = TRUE
+    )
+  ) %>%
+  ggplot(aes(x = income_q, y = conservative_margin)) +
+  geom_boxplot(fill = "lightgray", alpha = 0.5, outlier.shape = NA, width = 0.5) +
+  geom_jitter(
+    aes(size = lee_votes + yoon_votes, color = conservative_margin),
+    width = 0.15,
+    alpha = 0.7
+  ) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
+  scale_color_gradient2(
+    low = "#4a90e2",
+    mid = "gray80",
+    high = "#e74c3c",
+    midpoint = 0,
+    guide = "none"
+  ) +
+  scale_size_continuous(
+    name = "Total votes",
+    labels = label_comma(),
+    range = c(3, 10)
+  ) +
+  scale_y_continuous(labels = label_number(suffix = " pp")) +
+  labs(
+    title = "Conservative vote margins across four per-capita income quartiles",
+    x = "Per-capita income quartile",
+    y = "Conservative margin"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    legend.position = "right"
+  )
+```
+The boxplot reveals that the relationship between income and conservative tendencies is not a linear pattern in which higher income simply leads to stronger conservatism. In particular, in the lowest income quartile (Q1), the most conservative regions such as Daegu, Gyeongbuk, and Gyeongnam are concentrated, showing a strong conservative tendency. In contrast, the middle income group (Q2, Q3) has the largest distribution from strong progressive regions such as Jeonnam, Gwangju, and Jeonbuk to conservative regions, and thus has great ideological diversity. The highest income quartile (Q4) shows a weak conservative tendency on average, but is much weaker than the strong conservative advantage shown in Q1. This U-shaped pattern suggests that the simply interpretation that 'the higher the income, the more conservative' is not established, that the lowest and highest income groups show conservative tendencies for different reasons, and that the middle income group has the most mixed ideological structure, including the progressive and strong regions.
+
+---
+
+## Q4. Does GRDP predict politics like income does?
+
+```{r}
+#| label: fig-grdp-vs-conservatism
+#| fig-cap: "GRDP weakly predicts voting."
+#| warning: false
+#| fig-width: 11
+#| fig-height: 8
+#| code-fold: true
+#| message: false
+#| 
+cor_grdp <- cor(prov$grdp_2023, prov$conservative_margin)
+
+prov %>%
+  ggplot(aes(x = grdp_2023, y = conservative_margin)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
+  geom_smooth(method = "loess", se = TRUE, color = "darkblue", 
+              fill = "lightblue", alpha = 0.2, linewidth = 1.2) +
+  geom_point(
+    aes(size = lee_votes + yoon_votes, color = conservative_margin),
+    alpha = 0.7
+  ) +
+  geom_text_repel(
+    aes(label = province),
+    size = 3.5,
+    max.overlaps = 20
+  ) +
+  scale_color_gradient2(
+    low = "#4a90e2",
+    mid = "gray80",
+    high = "#e74c3c",
+    midpoint = 0,
+    guide = "none"
+  ) +
+  scale_size_continuous(
+    name = "Total votes",
+    labels = label_comma(),
+    range = c(3, 12)
+  ) +
+  scale_x_continuous(labels = label_comma()) +
+  scale_y_continuous(labels = label_number(suffix = " pp")) +
+  labs(
+    title = sprintf("GRDP weakly predicts voting (r = %.2f)", cor_grdp),
+    x = "Per-capita GRDP (thousands of won)",
+    y = "Conservative margin"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    legend.position = "right"
+  )
+```
+The scatterplot shows that per-capita GRDP has almost no systematic relationship with conservative voting, indicating that a region’s economic output does not translate directly into political preference. The LOESS curve is generally flat and shows only slight local fluctuations, and the correlation coefficient is also very weak (r ≈ 0.06). High GRDP provinces such as Ulsan do not consistently vote conservative, while low-GRDP regions such as Daegu exhibit strong conservative tendencies, and patterns that contradict a simple “wealthier regions vote conservative” explanation. This emphasizes that both income and GRDP have very weak power to explain voting propensity, and it is difficult to understand regional political propensity only by economic factors. This suggests that Korea's voting pattern is more affected by regional identity and historical factors than by economic level.
+
+
+```{r}
+#| label: fig-grdp-quartiles
+#| fig-cap: "Conservative vote margins across four per-capita GRDP quartiles."
+#| warning: false
+#| fig-width: 11
+#| fig-height: 7
+#| code-fold: true
+#| message: false
+
+prov %>%
+  mutate(
+    grdp_q = cut(
+      grdp_2023,
+      breaks = quantile(grdp_2023, probs = seq(0, 1, 0.25)),
+      labels = c("Q1 (Lowest)", "Q2", "Q3", "Q4 (Highest)"),
+      include.lowest = TRUE
+    )
+  ) %>%
+  ggplot(aes(x = grdp_q, y = conservative_margin)) +
+  geom_boxplot(fill = "lightgray", alpha = 0.5, outlier.shape = NA, width = 0.5) +
+  geom_jitter(
+    aes(size = lee_votes + yoon_votes, color = conservative_margin),
+    width = 0.15,
+    alpha = 0.7
+  ) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
+  scale_color_gradient2(
+    low = "#4a90e2",
+    mid = "gray80",
+    high = "#e74c3c",
+    midpoint = 0,
+    guide = "none"
+  ) +
+  scale_size_continuous(
+    name = "Total votes",
+    labels = label_comma(),
+    range = c(3, 10)
+  ) +
+  scale_y_continuous(labels = label_number(suffix = " pp")) +
+  labs(
+    title = "Conservative vote margins across four per-capita GRDP quartiles",
+    x = "Per-capita GRDP quartile",
+    y = "Conservative margin"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    legend.position = "right"
+  )
+```
+The boxplot compares the gap between conservative votes by dividing the per-capita GRDP into four quartiles, and shows that there is no clear relationship between the GRDP level and conservative tendency. Even within the lowest GRDP group (Q1), strong conservative regions (Daegu and Gyeongbuk) and strong progressive regions (Gwangju and Jeonnam) exist at the same time, and there is no consistent pattern in Q2 and Q3 due to a mixture of conservative and progressive tendencies. Even in Q4, which has the highest GRDP, the conservative vote rate does not show a constant increase or decrease, and the distribution range between regions is very diverse. Overall, since all four quartiles do not show significant changes in conservative tendencies or predictable directions, the regional economic output level (GRDP) has little influence in explaining Korea's regional political orientation, and the political pattern supports the conclusion that it is more determined by regional identity and historical factors than by economic structure.
+
+## Q5. Does Economic Structure Predict Regional Voting?
+
+```{r}
+#| label: fig-grdp-income-ratio
+#| fig-cap: "GRDP-to-income ratios vary widely, but conservative margins show no systematic pattern."
+#| fig-width: 11
+#| fig-height: 8
+#| code-fold: true
+
+prov |>
+  mutate(province = fct_reorder(province, grdp_income_ratio)) |>
+  ggplot(aes(x = province, y = grdp_income_ratio)) +
+  geom_segment(aes(xend = province, y = 1, yend = grdp_income_ratio),
+               color = "gray60", linewidth = 0.8) +
+  geom_point(aes(color = conservative_margin, size = lee_votes + yoon_votes),
+             alpha = 0.8) +
+  geom_hline(yintercept = 1, linetype = "solid", 
+             color = "black", linewidth = 0.5) +
+  scale_color_gradient2(
+    low = "#4a90e2", mid = "#95a5a6", high = "#e74c3c",
+    midpoint = 0,
+    name = "Conservative\nMargin (pp)",
+    labels = label_number(suffix = "")
+  ) +
+  scale_size_continuous(
+    name = "Total Votes",
+    labels = label_comma(),
+    range = c(3, 12)
+  ) +
+  scale_y_continuous(breaks = seq(1, 2.2, 0.2)) +
+  coord_flip() +
+  labs(
+    title = "Production vs. Consumption Economies Show No Clear Pattern",
+    subtitle = "GRDP-to-income ratios range from 1.1 to 2.0, but both conservative and progressive strongholds appear across the spectrum.",
+    x = NULL,
+    y = "GRDP-to-Income Ratio",
+    caption = "Ratio = 1 means GRDP equals income; >1 means production exceeds income. Source: KOSIS & NEC"
+  ) +
+  theme(
+    plot.title = element_text(face = "bold", size = 20),
+    plot.subtitle = element_text(size = 13, color = "gray30"),
+    legend.position = "right",
+    panel.grid.major.y = element_blank()
+  )
+```
+This lollipop chart compares the GRDP-income ratio of each region (the structural indicator of production-oriented economy vs. consumption-oriented economy) with the gap in the number of conservative votes. The ratio is spread out from about 1.1 to 2.0, but strong conservative areas and strong progressive areas are mixed and distributed throughout the section. For example, Daegu and Gyeongbuk, which have very strong conservative tendencies, and Gwangju and Jeonnam, which have very strong progressive tendencies, are all located near 1.3 to 1.5, and Ulsan and Chungnam, which have high ratios, are also close to the middle level rather than overwhelming conservatism. The fact that there is no clear gradient of color (conservative gap) along the vertical axis means that even regions with similar economic structures may have very different political tendencies. Along with the previous income and GRDP analysis, neither income level nor production structure strongly explain Korea's regional voting patterns, supporting the interpretation that regional identity and historical factors play a much more important role.

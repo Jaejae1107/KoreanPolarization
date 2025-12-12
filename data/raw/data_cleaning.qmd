@@ -1,0 +1,126 @@
+## Data Import and Cleaning (Preprocessing)
+
+```{r}
+#| label: load-packages
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(readxl)
+library(naniar)
+library(knitr)
+
+theme_set(theme_grey(16))
+```
+
+This section processes the raw data files and creates a cleaned, merged dataset for analysis.
+
+```{r}
+#| label: data-processing
+#| message: false
+#| warning: false
+#| code-fold: true
+
+income_raw <- read_csv(
+  "1인당_개인소득_시도__20251210131454.csv",
+  locale = locale(encoding = "EUC-KR"),
+  show_col_types = FALSE
+)
+
+income <- income_raw |>
+  rename(province = `시도별`) |>
+  select(province, income_2023 = `2023 p)`) |>
+  filter(province != "전국")  
+
+grdp_raw <- read_csv(
+  "1인당_GRDP_시도__20251210132031.csv",
+  locale = locale(encoding = "EUC-KR"),
+  show_col_types = FALSE
+)
+
+grdp <- grdp_raw |>
+  rename(province = `시도별`) |>
+  select(province, grdp_2023 = `2023 p)`) |>
+  filter(province != "전국")  # Remove national total
+
+election_raw <- read_excel(
+  "개표자료_제20대_대통령선거.xlsx",
+  col_names = FALSE
+)
+
+election_provinces <- election_raw |>
+  filter(
+    ...2 == "합계",  # 구시군 = 합계
+    ...1 != "전국"   # Exclude national total
+  ) |>
+  select(
+    province = ...1,
+    lee_votes = ...7,    # 이재명 (liberal)
+    yoon_votes = ...8,   # 윤석열 (conservative)
+    total_votes = ...19  # 후보자별 득표수 계
+  ) |>
+  mutate(
+    across(c(lee_votes, yoon_votes, total_votes), 
+           ~as.numeric(str_replace_all(as.character(.), ",", "")))
+  ) |>
+  mutate(
+    lee_pct = (lee_votes / total_votes) * 100,
+    yoon_pct = (yoon_votes / total_votes) * 100,
+    conservative_margin = yoon_pct - lee_pct
+  )
+
+province_mapping <- c(
+  "서울특별시" = "Seoul",
+  "부산광역시" = "Busan",
+  "대구광역시" = "Daegu",
+  "인천광역시" = "Incheon",
+  "광주광역시" = "Gwangju",
+  "대전광역시" = "Daejeon",
+  "울산광역시" = "Ulsan",
+  "세종특별자치시" = "Sejong",
+  "경기도" = "Gyeonggi",
+  "강원특별자치도" = "Gangwon", 
+  "충청북도" = "Chungbuk",
+  "충청남도" = "Chungnam",
+  "전북특별자치도" = "Jeonbuk",  
+  "전라남도" = "Jeonnam",
+  "경상북도" = "Gyeongbuk",
+  "경상남도" = "Gyeongnam",
+  "제주특별자치도" = "Jeju",
+  "강원도" = "Gangwon",
+  "전라북도" = "Jeonbuk"
+)
+
+income <- income |> mutate(province = recode(province, !!!province_mapping))
+grdp <- grdp |> mutate(province = recode(province, !!!province_mapping))
+election_provinces <- election_provinces |> 
+  mutate(province = recode(province, !!!province_mapping))
+
+data <- income |>
+  left_join(grdp, by = "province") |>
+  left_join(election_provinces, by = "province") |>
+  mutate(
+    grdp_income_ratio = grdp_2023 / income_2023,
+    high_income = income_2023 > median(income_2023, na.rm = TRUE),
+    high_grdp = grdp_2023 > median(grdp_2023, na.rm = TRUE),
+    economic_type = case_when(
+      high_income & high_grdp ~ "High Income, High GRDP",
+      high_income & !high_grdp ~ "High Income, Low GRDP",
+      !high_income & high_grdp ~ "Low Income, High GRDP",
+      !high_income & !high_grdp ~ "Low Income, Low GRDP"
+    )
+  ) |>
+  arrange(desc(income_2023))
+
+write_csv(data, "merged_province_data.csv")
+```
+
+The data processing successfully merged economic indicators and election results for all 17 South Korean provinces. The cleaned dataset is saved to `data/clean/merged_province_data.csv` for reproducibility.
+
+```{r}
+#| label: data-preview
+#| echo: True
+#| code-fold: true
+
+glimpse(data)
+```

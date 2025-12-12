@@ -2,6 +2,126 @@
 
 ## Description
 
-I aim to explore Korea’s political polarization from an economic and generational perspective by conducting a reliable, national data-based analysis. The first data is the statistical data from the KOrean Statistical Information Service (KOSIS) operated by the Statistics Korea (KOSTAT) of the Republic of Korea, which provides Gross Regional Domestic Product, Gross Regional Income, and Personal Income per city and province, and it’s annually updated quantitative indicators of the economic level of 17 cities and provinces nationwide. The data is provided in CSV format, so it can be imported and used directly from the R environment. The second data is the result of the 20th presidential election collected and published by the National Election Commission of the Republic of Korea, which includes the number of votes and the vote share cast by political parties across the country and can be easily downloaded through the public data portal, such as data.go.kr. I’m also planning to use survey data released by public polling institutions such as Korea Research and Gallup as an auxiliary to compare voting propensity based on age group. However, due to the secret voting principle, the data on the vote share by age group does not exist directly. Therefore, the indirect pattern will be interpreted by combining the regional political orientation based on election statistics and the political attitude by age based on opinion polls. All data is provided by reliable official institutions of the Republic of Korea, and it’s accessible online and suitable for analysis purposes, ensuring sufficient validity and reproducibility for conducting exploratory visualization-based research.
+This project draws on three official data sources collected and managed by the government agencies in South Korea. Economic indicators come from the Korean Statistical Information Service (KOSIS) operated by Statistics Korea, which annually publishes province-level per capita GRDP and per capita personal income derived from administrative records and national accounts procedures. These datasets are provided in CSV format, updated once a year, containing 17 rows (one for each province) and a single numeric variable per file. Political data is the result of the counting of the 20th presidential election in 2022 provided by the National Election Commission (NEC), and the original Excel data is composed of voting districts and is confirmed after the election, and in this study, it was aggregated at the city/province level for combination with economic data. All three data are freely accessible and well documented online, and no missing values or structural problems were found during the pre-processing process. Due to the secret voting principle, there is no data on voting propensity at the age and individual levels, so this project conducts an analysis based on summary statistics at the regional level. The exact files used are provided in the project repository for full reproducibility.
+
+Also, the data has been preprocessed, and the merged dataset contains province-level economic indicators and election results used throughout this analysis. The key variables are defined as follows:
+
+**Economic Variables**
+
+- **`income_2023`** — Per-capita personal income in 2022~2023, representing average household economic capacity.
+- **`grdp_2023`** — Per-capita Gross Regional Domestic Product in 2022~2023, reflecting the scale of regional production.
+- **`grdp_income_ratio`** — The ratio of GRDP to income (GRDP ÷ income), where higher values indicate more production-oriented local economies.
+
+**Political Variables**
+
+- **`yoon_votes`, `lee_votes`** — Vote counts for the conservative and progressive candidates.
+- **`conservative_margin`** — Vote margin between Yoon and Lee (Yoon share − Lee share), expressed in percentage points.
+- **`total_votes`** — Total votes received by the two major candidates, used to capture voting volume.
+
+**Regional Variables**
+
+- **`province`** — The administrative unit (e.g., Seoul, Busan), which defines each observation.
+- **`region_group`** — A categorical grouping of provinces (e.g., Capital Region, Yeongnam, Honam), used for geographic interpretation.
+
+These variables collectively enable the exploration of whether economic conditions or economic structure meaningfully relate to regional voting patterns in South Korea.
+
 
 ## Missing value analysis
+
+```{r}
+#| label: setup-data-missing
+#| include: false
+
+library(tidyverse)
+library(scales)
+
+prov <- read_csv("data/raw/merged_province_data.csv")
+```
+
+```{r}
+#| label: fig-missing-by-variable
+#| fig-cap: "Number and proportion of missing values by variable."
+#| warning: false
+#| message: false
+#| code-fold: true
+
+missing_by_var <- prov %>%
+summarise(across(everything(), ~ sum(is.na(.)))) %>%
+pivot_longer(everything(),
+names_to = "variable",
+values_to = "n_missing") %>%
+mutate(
+prop_missing = n_missing / nrow(prov),
+variable = fct_reorder(variable, n_missing)
+)
+
+ggplot(missing_by_var, aes(x = variable, y = n_missing)) +
+geom_col(width = 0.7) +
+geom_text(
+aes(label = n_missing),
+vjust = -0.2,
+size = 4
+) +
+scale_y_continuous(
+breaks = pretty_breaks(5),
+expand = expansion(mult = c(0, 0.1))
+) +
+labs(
+x = NULL,
+y = "Number of missing values"
+) +
+theme_minimal(base_size = 16) +
+theme(
+axis.text.x = element_text(angle = 30, hjust = 1)
+)
+```
+
+The first plot summarizes the number of missing values for every variable in the merged province-level dataset. As shown in the graph, all variables have missing values of 0, which means that there are no missing data were detected across any of the 17 provinces.
+
+This result indicates that the dataset is fully complete and does not require imputation or row removal before analysis. Since economic indicators from KOSIS and election results from the NEC are standardized administrative records, the absence of missingness is expected.The completed data structure ensures that subsequent visualization and correlation analysis are not distorted by missing data, and there is an advantage in that information from all 17 cities and provinces can be used without a separate correction or deletion procedure.
+
+
+```{r}
+#| label: fig-missing-heatmap
+#| fig-cap: "Missingness matrix: each cell indicates whether a value is observed or missing."
+#| warning: false
+#| message: false
+#| code-fold: true
+
+
+missing_matrix <- prov %>%
+  mutate(across(everything(), as.character)) %>%
+  pivot_longer(
+    cols = -province,
+    names_to = "variable",
+    values_to = "value"
+  ) %>%
+  mutate(
+    is_missing = if_else(is.na(value) | value == "", "Missing", "Observed")
+  )
+
+ggplot(missing_matrix, aes(x = variable, y = province, fill = is_missing)) +
+  geom_tile(color = "white") +
+  scale_fill_manual(
+    values = c("Observed" = "#4daf4a", "Missing" = "#e41a1c")
+  ) +
+  labs(
+    x = "Variable",
+    y = "Province",
+    fill = NULL
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    axis.text.x = element_text(angle = 30, hjust = 1)
+  )
+```
+
+The second plot presents a missingness heatmap that visually shows whether each value has been observed for 17 provinces (row) and all variables (column) in the dataset. Each cell represents a specific province-variable pair, and green indicates that there is a value (Observed). Since the entire graph is uniformly filled with green, it demonstrates that there are no missing observations for any variable or region, and no localized or variable-specific missingness patterns are present.
+
+This visual confirmation aligns with the previous missing value summary statistics and reflects the characteristic that structural missing does not occur as both the economic indicators (KOSIS) and election results (NEC) used in the analysis are official data collected based on administrative procedures. The absence of missing values eliminates the possibility of sample loss or bias in all subsequent analysis stages, such as visualization, correlation analysis, and regional comparison, and shows that the entire dataset can be used as it is.
+
+
+**Data Sources**
+
+- National Election Commission (NEC): <https://info.nec.go.kr/>
+- Korean Statistical Information Service (KOSIS): <https://kosis.kr/eng/>

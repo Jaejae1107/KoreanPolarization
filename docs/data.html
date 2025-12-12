@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -173,10 +208,126 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="description" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="description"><span class="header-section-number">2.1</span> Description</h2>
-<p>I aim to explore Korea’s political polarization from an economic and generational perspective by conducting a reliable, national data-based analysis. The first data is the statistical data from the KOrean Statistical Information Service (KOSIS) operated by the Statistics Korea (KOSTAT) of the Republic of Korea, which provides Gross Regional Domestic Product, Gross Regional Income, and Personal Income per city and province, and it’s annually updated quantitative indicators of the economic level of 17 cities and provinces nationwide. The data is provided in CSV format, so it can be imported and used directly from the R environment. The second data is the result of the 20th presidential election collected and published by the National Election Commission of the Republic of Korea, which includes the number of votes and the vote share cast by political parties across the country and can be easily downloaded through the public data portal, such as data.go.kr. I’m also planning to use survey data released by public polling institutions such as Korea Research and Gallup as an auxiliary to compare voting propensity based on age group. However, due to the secret voting principle, the data on the vote share by age group does not exist directly. Therefore, the indirect pattern will be interpreted by combining the regional political orientation based on election statistics and the political attitude by age based on opinion polls. All data is provided by reliable official institutions of the Republic of Korea, and it’s accessible online and suitable for analysis purposes, ensuring sufficient validity and reproducibility for conducting exploratory visualization-based research.</p>
+<p>This project draws on three official data sources collected and managed by the government agencies in South Korea. Economic indicators come from the Korean Statistical Information Service (KOSIS) operated by Statistics Korea, which annually publishes province-level per capita GRDP and per capita personal income derived from administrative records and national accounts procedures. These datasets are provided in CSV format, updated once a year, containing 17 rows (one for each province) and a single numeric variable per file. Political data is the result of the counting of the 20th presidential election in 2022 provided by the National Election Commission (NEC), and the original Excel data is composed of voting districts and is confirmed after the election, and in this study, it was aggregated at the city/province level for combination with economic data. All three data are freely accessible and well documented online, and no missing values or structural problems were found during the pre-processing process. Due to the secret voting principle, there is no data on voting propensity at the age and individual levels, so this project conducts an analysis based on summary statistics at the regional level. The exact files used are provided in the project repository for full reproducibility.</p>
+<p>Also, the data has been preprocessed, and the merged dataset contains province-level economic indicators and election results used throughout this analysis. The key variables are defined as follows:</p>
+<p><strong>Economic Variables</strong></p>
+<ul>
+<li><strong><code>income_2023</code></strong> — Per-capita personal income in 2022~2023, representing average household economic capacity.</li>
+<li><strong><code>grdp_2023</code></strong> — Per-capita Gross Regional Domestic Product in 2022~2023, reflecting the scale of regional production.</li>
+<li><strong><code>grdp_income_ratio</code></strong> — The ratio of GRDP to income (GRDP ÷ income), where higher values indicate more production-oriented local economies.</li>
+</ul>
+<p><strong>Political Variables</strong></p>
+<ul>
+<li><strong><code>yoon_votes</code>, <code>lee_votes</code></strong> — Vote counts for the conservative and progressive candidates.</li>
+<li><strong><code>conservative_margin</code></strong> — Vote margin between Yoon and Lee (Yoon share − Lee share), expressed in percentage points.</li>
+<li><strong><code>total_votes</code></strong> — Total votes received by the two major candidates, used to capture voting volume.</li>
+</ul>
+<p><strong>Regional Variables</strong></p>
+<ul>
+<li><strong><code>province</code></strong> — The administrative unit (e.g., Seoul, Busan), which defines each observation.</li>
+<li><strong><code>region_group</code></strong> — A categorical grouping of provinces (e.g., Capital Region, Yeongnam, Honam), used for geographic interpretation.</li>
+</ul>
+<p>These variables collectively enable the exploration of whether economic conditions or economic structure meaningfully relate to regional voting patterns in South Korea.</p>
 </section>
 <section id="missing-value-analysis" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="missing-value-analysis"><span class="header-section-number">2.2</span> Missing value analysis</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>missing_by_var <span class="ot">&lt;-</span> prov <span class="sc">%&gt;%</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(.)))) <span class="sc">%&gt;%</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pivot_longer</span>(<span class="fu">everything</span>(),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">names_to =</span> <span class="st">"variable"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">values_to =</span> <span class="st">"n_missing"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">prop_missing =</span> n_missing <span class="sc">/</span> <span class="fu">nrow</span>(prov),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">variable =</span> <span class="fu">fct_reorder</span>(variable, n_missing)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(missing_by_var, <span class="fu">aes</span>(<span class="at">x =</span> variable, <span class="at">y =</span> n_missing)) <span class="sc">+</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_text</span>(</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">aes</span>(<span class="at">label =</span> n_missing),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.2</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="at">size =</span> <span class="dv">4</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_y_continuous</span>(</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="at">breaks =</span> <span class="fu">pretty_breaks</span>(<span class="dv">5</span>),</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.1</span>))</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="at">y =</span> <span class="st">"Number of missing values"</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>, <span class="at">hjust =</span> <span class="dv">1</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-missing-by-variable" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-missing-by-variable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="data_files/figure-html/fig-missing-by-variable-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-missing-by-variable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: Number and proportion of missing values by variable.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The first plot summarizes the number of missing values for every variable in the merged province-level dataset. As shown in the graph, all variables have missing values of 0, which means that there are no missing data were detected across any of the 17 provinces.</p>
+<p>This result indicates that the dataset is fully complete and does not require imputation or row removal before analysis. Since economic indicators from KOSIS and election results from the NEC are standardized administrative records, the absence of missingness is expected.The completed data structure ensures that subsequent visualization and correlation analysis are not distorted by missing data, and there is an advantage in that information from all 17 cities and provinces can be used without a separate correction or deletion procedure.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>missing_matrix <span class="ot">&lt;-</span> prov <span class="sc">%&gt;%</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), as.character)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span>province,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"variable"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"value"</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">is_missing =</span> <span class="fu">if_else</span>(<span class="fu">is.na</span>(value) <span class="sc">|</span> value <span class="sc">==</span> <span class="st">""</span>, <span class="st">"Missing"</span>, <span class="st">"Observed"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(missing_matrix, <span class="fu">aes</span>(<span class="at">x =</span> variable, <span class="at">y =</span> province, <span class="at">fill =</span> is_missing)) <span class="sc">+</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Observed"</span> <span class="ot">=</span> <span class="st">"#4daf4a"</span>, <span class="st">"Missing"</span> <span class="ot">=</span> <span class="st">"#e41a1c"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Variable"</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Province"</span>,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="cn">NULL</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>, <span class="at">hjust =</span> <span class="dv">1</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-missing-heatmap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-missing-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="data_files/figure-html/fig-missing-heatmap-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-missing-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.2: Missingness matrix: each cell indicates whether a value is observed or missing.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The second plot presents a missingness heatmap that visually shows whether each value has been observed for 17 provinces (row) and all variables (column) in the dataset. Each cell represents a specific province-variable pair, and green indicates that there is a value (Observed). Since the entire graph is uniformly filled with green, it demonstrates that there are no missing observations for any variable or region, and no localized or variable-specific missingness patterns are present.</p>
+<p>This visual confirmation aligns with the previous missing value summary statistics and reflects the characteristic that structural missing does not occur as both the economic indicators (KOSIS) and election results (NEC) used in the analysis are official data collected based on administrative procedures. The absence of missing values eliminates the possibility of sample loss or bias in all subsequent analysis stages, such as visualization, correlation analysis, and regional comparison, and shows that the entire dataset can be used as it is.</p>
+<p><strong>Data Sources</strong></p>
+<ul>
+<li>National Election Commission (NEC): <a href="https://info.nec.go.kr/" class="uri">https://info.nec.go.kr/</a></li>
+<li>Korean Statistical Information Service (KOSIS): <a href="https://kosis.kr/eng/" class="uri">https://kosis.kr/eng/</a></li>
+</ul>
 
 
 </section>

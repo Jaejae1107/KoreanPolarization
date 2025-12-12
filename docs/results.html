@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -69,6 +104,30 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+
+<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+
+<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
+
+<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+
+<script src="site_libs/proj4-2.6.2/proj4.min.js"></script>
+
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+
+<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+
+<script src="site_libs/leaflet-binding-2.2.3/leaflet.js"></script>
+
+<script src="site_libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+
+<script src="site_libs/leaflet-providers-plugin-2.2.3/leaflet-providers-plugin.js"></script>
+
 
 
 </head>
@@ -139,8 +198,19 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#geographic-context-south-koreas-regional-landscape" id="toc-geographic-context-south-koreas-regional-landscape" class="nav-link active" data-scroll-target="#geographic-context-south-koreas-regional-landscape"><span class="header-section-number">3.1</span> Geographic Context: South Korea’s Regional Landscape</a></li>
+  <li><a href="#q1.-how-unequal-are-regional-income-levels" id="toc-q1.-how-unequal-are-regional-income-levels" class="nav-link" data-scroll-target="#q1.-how-unequal-are-regional-income-levels"><span class="header-section-number">3.2</span> Q1. How unequal are regional income levels?</a></li>
+  <li><a href="#q2.-how-stark-is-electoral-polarization" id="toc-q2.-how-stark-is-electoral-polarization" class="nav-link" data-scroll-target="#q2.-how-stark-is-electoral-polarization"><span class="header-section-number">3.3</span> Q2. How stark is electoral polarization?</a></li>
+  <li><a href="#q3.-does-higher-income-predict-conservative-voting" id="toc-q3.-does-higher-income-predict-conservative-voting" class="nav-link" data-scroll-target="#q3.-does-higher-income-predict-conservative-voting"><span class="header-section-number">3.4</span> Q3. Does higher income predict conservative voting?</a></li>
+  <li><a href="#q4.-does-grdp-predict-politics-like-income-does" id="toc-q4.-does-grdp-predict-politics-like-income-does" class="nav-link" data-scroll-target="#q4.-does-grdp-predict-politics-like-income-does"><span class="header-section-number">3.5</span> Q4. Does GRDP predict politics like income does?</a></li>
+  <li><a href="#q5.-does-economic-structure-predict-regional-voting" id="toc-q5.-does-economic-structure-predict-regional-voting" class="nav-link" data-scroll-target="#q5.-does-economic-structure-predict-regional-voting"><span class="header-section-number">3.6</span> Q5. Does Economic Structure Predict Regional Voting?</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Jaejae1107/KoreanPolarization/edit/main/results.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Jaejae1107/KoreanPolarization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -164,8 +234,665 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="geographic-context-south-koreas-regional-landscape" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="geographic-context-south-koreas-regional-landscape"><span class="header-section-number">3.1</span> Geographic Context: South Korea’s Regional Landscape</h2>
+<p>South Korea is divided into 17 provinces and metropolitan cities, and each region has a large area and its own administrative center and is geographically distributed. In this project, since the visualization was composed using a single coordinate (administrative center) representing each city and province, the points are arranged at regular intervals in a form that reflects the distance between regions rather than densely filling the entire map. This arrangement is not a problem of data loss or visual gap, but it’s a result that naturally occurs in the aggregate characteristics of city/province data and the spatial scale of administrative districts, and is also suitable for clearly showing comparisons between regions in subsequent analysis.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Income color palette</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>income_pal <span class="ot">&lt;-</span> <span class="fu">colorNumeric</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">palette =</span> <span class="st">"YlOrRd"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">domain =</span> prov_map<span class="sc">$</span>income_2023,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">reverse =</span> <span class="cn">TRUE</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create map with scaled circles</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">leaflet</span>(prov_map) <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>CartoDB.Positron) <span class="sc">%&gt;%</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">lng =</span> <span class="sc">~</span>lon,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">lat =</span> <span class="sc">~</span>lat,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">radius =</span> <span class="sc">~</span><span class="fu">sqrt</span>(total_votes) <span class="sc">/</span> <span class="dv">150</span>,  <span class="co"># Scale by voters</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">fillColor =</span> <span class="sc">~</span><span class="fu">income_pal</span>(income_2023),</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">fillOpacity =</span> <span class="fl">0.8</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"#333333"</span>,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">weight =</span> <span class="dv">2</span>,</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">opacity =</span> <span class="dv">1</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">popup =</span> <span class="sc">~</span><span class="fu">paste0</span>(</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;div style='padding: 12px; font-family: Arial; min-width: 250px;'&gt;"</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'&gt;"</span>, </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>      province, <span class="st">"&lt;/h3&gt;"</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;table style='width: 100%; font-size: 14px;'&gt;"</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;tr&gt;&lt;td&gt;&lt;b&gt;💰 Income&lt;/b&gt;&lt;/td&gt;&lt;td style='text-align: right;'&gt;&lt;b&gt;₩"</span>, </span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        <span class="fu">format</span>(income_2023, <span class="at">big.mark =</span> <span class="st">","</span>), <span class="st">"K&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;"</span>,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;tr style='background: #f8f9fa;'&gt;&lt;td&gt;&lt;b&gt;🏭 GRDP&lt;/b&gt;&lt;/td&gt;&lt;td style='text-align: right;'&gt;₩"</span>, </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        <span class="fu">format</span>(grdp_2023, <span class="at">big.mark =</span> <span class="st">","</span>), <span class="st">"K&lt;/td&gt;&lt;/tr&gt;"</span>,</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;tr&gt;&lt;td&gt;&lt;b&gt;👥 Voters&lt;/b&gt;&lt;/td&gt;&lt;td style='text-align: right;'&gt;"</span>, </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        <span class="fu">format</span>(total_votes, <span class="at">big.mark =</span> <span class="st">","</span>), <span class="st">"&lt;/td&gt;&lt;/tr&gt;"</span>,</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;tr style='background: #f8f9fa;'&gt;&lt;td&gt;&lt;b&gt;📊 GRDP/Income&lt;/b&gt;&lt;/td&gt;&lt;td style='text-align: right;'&gt;"</span>, </span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        <span class="fu">round</span>(grdp_income_ratio, <span class="dv">2</span>), <span class="st">"×&lt;/td&gt;&lt;/tr&gt;"</span>,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;/table&gt;"</span>,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;/div&gt;"</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="sc">~</span>province,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">labelOptions =</span> <span class="fu">labelOptions</span>(</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="fu">list</span>(<span class="st">"font-weight"</span> <span class="ot">=</span> <span class="st">"bold"</span>, <span class="st">"font-size"</span> <span class="ot">=</span> <span class="st">"14px"</span>),</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>      <span class="at">direction =</span> <span class="st">"auto"</span>,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">offset =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="dv">10</span>)</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addLegend</span>(</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bottomright"</span>,</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">pal =</span> income_pal,</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="sc">~</span>income_2023,</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Per Capita Income&lt;br/&gt;(₩1,000)"</span>,</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">opacity =</span> <span class="fl">0.8</span>,</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">labFormat =</span> <span class="fu">labelFormat</span>(<span class="at">big.mark =</span> <span class="st">","</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setView</span>(<span class="at">lng =</span> <span class="fl">127.7</span>, <span class="at">lat =</span> <span class="fl">36.5</span>, <span class="at">zoom =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-income-map-points" class="cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-income-map-points-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-50f3c70668fa0fd71e1a" style="width:100%;height:650px;"></div>
+<script type="application/json" data-for="htmlwidget-50f3c70668fa0fd71e1a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[37.5665,35.5384,36.3504,36.4875,37.4138,35.1595,36.6357,37.4563,34.8679,35.7175,35.1796,35.8714,36.5184,37.8228,36.4919,33.489,35.4606],[126.978,129.3114,127.3845,127.2817,127.5183,126.8526,127.4913,126.7052,126.991,127.153,129.0756,128.6014,126.8,128.1555,128.8889,126.4983,128.2132],[16.91697241103016,5.689717821552216,6.451187659820649,3.196463323390053,19.65409315582324,6.594950930657315,6.700610254131916,9.109345628407002,7.51773015388732,7.379909665210454,9.843617221326722,8.424319293305279,7.636500070931273,6.686104994688612,8.838541860636415,4.24388710709625,9.716753001331714],null,null,{"interactive":true,"className":"","stroke":true,"color":"#333333","weight":2,"opacity":1,"fill":true,"fillColor":["#FFFFCC","#FFE289","#FEA044","#FD883A","#FD7334","#FC5A2D","#EB2E20","#EA2E20","#E9291F","#D71320","#D10F21","#C50524","#BF0226","#A90026","#8B0026","#890026","#800026"],"fillOpacity":0.8},null,null,["<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Seoul<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩29,372K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩58,255K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>6,439,139<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>1.98×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Ulsan<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩28,102K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩81,235K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>  728,390<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>2.89×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Daejeon<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩26,493K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩36,645K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>  936,401<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>1.38×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Sejong<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩25,995K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩43,174K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>  229,891<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>1.66×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Gyeonggi<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩25,696K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩43,070K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>8,691,376<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>1.68×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Gwangju<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩25,378K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩35,452K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>  978,601<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>1.4×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Chungbuk<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩24,667K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩54,214K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>1,010,209<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>2.2×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Incheon<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩24,665K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩38,840K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>1,867,054<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>1.57×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Jeonnam<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩24,604K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩55,513K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>1,271,616<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>2.26×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Jeonbuk<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩24,157K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩36,283K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>1,225,419<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>1.5×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Busan<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩24,026K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩34,762K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>2,180,178<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>1.45×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Daegu<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩23,760K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩30,985K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>1,596,806<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>1.3×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Chungnam<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩23,647K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩64,709K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>1,312,113<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>2.74×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Gangwon<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩23,326K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩40,713K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>1,005,840<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>1.75×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Gyeongbuk<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩22,921K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩48,812K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>1,757,696<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>2.13×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Jeju<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩22,893K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩38,450K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>  405,238<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>1.68×<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 250px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Gyeongnam<\/h3><table style='width: 100%; font-size: 14px;'><tr><td><b>💰 Income<\/b><\/td><td style='text-align: right;'><b>₩22,769K<\/b><\/td><\/tr><tr style='background: #f8f9fa;'><td><b>🏭 GRDP<\/b><\/td><td style='text-align: right;'>₩42,144K<\/td><\/tr><tr><td><b>👥 Voters<\/b><\/td><td style='text-align: right;'>2,124,344<\/td><\/tr><tr style='background: #f8f9fa;'><td><b>📊 GRDP/Income<\/b><\/td><td style='text-align: right;'>1.85×<\/td><\/tr><\/table><\/div>"],null,["Seoul","Ulsan","Daejeon","Sejong","Gyeonggi","Gwangju","Chungbuk","Incheon","Jeonnam","Jeonbuk","Busan","Daegu","Chungnam","Gangwon","Gyeongbuk","Jeju","Gyeongnam"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,-10],"textsize":"10px","textOnly":false,"style":{"font-weight":"bold","font-size":"14px"},"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["#800026 , #910026 3.49840981372104%, #D00E22 18.6430410419506%, #F54126 33.7876722701802%, #FD883A 48.9323034984098%, #FEB751 64.0769347266394%, #FFE084 79.221565954869%, #FFF7B8 94.3661971830986%, #FFFFCC "],"labels":["23,000","24,000","25,000","26,000","27,000","28,000","29,000"],"na_color":null,"na_label":"NA","opacity":0.8,"position":"bottomright","type":"numeric","title":"Per Capita Income<br/>(₩1,000)","extra":{"p_1":0.03498409813721036,"p_n":0.9436619718309859},"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[33.489,37.8228],"lng":[126.4983,129.3114]},"setView":[[36.5,127.7],7,[]]},"evals":[],"jsHooks":[]}</script>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-income-map-points-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.1: Per capita income by province: circle size shows total voters, color shows income level
+</figcaption>
+</figure>
+</div>
+</div>
+<p><strong>Geographic pattern clear</strong>: The map reveals a clear geographical pattern at the income level of each region in Korea. Especially, the northwest cluster, which is the metropolitan area centered on Seoul and Gyeonggi shows the highest per capita income and the large number of voters at the same time, showing bright colors and large circles. Ulsan stands out as a high-income industrial city along the southeastern coast, distinct from neighboring areas. In contrast, Gangwon Jeolla region, and some southern Gyeongsang areas are marked with relatively dark colors and small circles, indicating that the income level is low and the population size is small. Since the size of the circle is proportional to the number of voters, Seoul and major cities are particularly large, and it can be seen that the distribution of population and economic concentration appear spatially together.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Political color palette</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>voting_pal <span class="ot">&lt;-</span> <span class="fu">colorNumeric</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#053061"</span>, <span class="st">"#2166ac"</span>, <span class="st">"#4393c3"</span>, <span class="st">"#92c5de"</span>, <span class="st">"#d1e5f0"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>              <span class="st">"#f7f7f7"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>              <span class="st">"#fddbc7"</span>, <span class="st">"#f4a582"</span>, <span class="st">"#d6604d"</span>, <span class="st">"#b2182b"</span>, <span class="st">"#67001f"</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">domain =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">80</span>, <span class="dv">60</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create voting map</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">leaflet</span>(prov_map) <span class="sc">%&gt;%</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>CartoDB.Positron) <span class="sc">%&gt;%</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">lng =</span> <span class="sc">~</span>lon,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">lat =</span> <span class="sc">~</span>lat,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">radius =</span> <span class="sc">~</span><span class="fu">sqrt</span>(total_votes) <span class="sc">/</span> <span class="dv">150</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">fillColor =</span> <span class="sc">~</span><span class="fu">voting_pal</span>(conservative_margin),</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">fillOpacity =</span> <span class="fl">0.85</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"#333333"</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">weight =</span> <span class="dv">2</span>,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">opacity =</span> <span class="dv">1</span>,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">popup =</span> <span class="sc">~</span><span class="fu">paste0</span>(</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;div style='padding: 12px; font-family: Arial; min-width: 280px;'&gt;"</span>,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid "</span>,</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ifelse</span>(conservative_margin <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">"#e74c3c"</span>, <span class="st">"#3498db"</span>), <span class="st">";'&gt;"</span>, </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        province, <span class="st">"&lt;/h3&gt;"</span>,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;table style='width: 100%; font-size: 14px;'&gt;"</span>,</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;tr style='background: #e3f2fd;'&gt;&lt;td style='padding: 6px;'&gt;&lt;b&gt;🔵 Lee Jae-myung&lt;/b&gt;&lt;/td&gt;"</span>,</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"&lt;td style='text-align: right; padding: 6px;'&gt;&lt;b&gt;"</span>, <span class="fu">round</span>(lee_pct, <span class="dv">1</span>), <span class="st">"%&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;"</span>,</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;tr style='background: #ffebee;'&gt;&lt;td style='padding: 6px;'&gt;&lt;b&gt;🔴 Yoon Seok-youl&lt;/b&gt;&lt;/td&gt;"</span>,</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        <span class="st">"&lt;td style='text-align: right; padding: 6px;'&gt;&lt;b&gt;"</span>, <span class="fu">round</span>(yoon_pct, <span class="dv">1</span>), <span class="st">"%&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;"</span>,</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;tr style='border-top: 2px solid #ddd;'&gt;&lt;td style='padding: 6px;'&gt;&lt;b&gt;📊 Margin&lt;/b&gt;&lt;/td&gt;"</span>,</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        <span class="st">"&lt;td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: "</span>,</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ifelse</span>(conservative_margin <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">"#b2182b"</span>, <span class="st">"#2166ac"</span>), <span class="st">";'&gt;"</span>,</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ifelse</span>(conservative_margin <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">"+"</span>, <span class="st">""</span>),</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        <span class="fu">round</span>(conservative_margin, <span class="dv">1</span>), <span class="st">" pp&lt;/td&gt;&lt;/tr&gt;"</span>,</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;tr style='background: #f8f9fa;'&gt;&lt;td style='padding: 6px;'&gt;Total Votes&lt;/td&gt;"</span>,</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        <span class="st">"&lt;td style='text-align: right; padding: 6px;'&gt;"</span>, </span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        <span class="fu">format</span>(total_votes, <span class="at">big.mark =</span> <span class="st">","</span>), <span class="st">"&lt;/td&gt;&lt;/tr&gt;"</span>,</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;/table&gt;"</span>,</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>      <span class="st">"&lt;/div&gt;"</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="sc">~</span><span class="fu">paste0</span>(province, <span class="st">": "</span>, <span class="fu">ifelse</span>(conservative_margin <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">"+"</span>, <span class="st">""</span>), </span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">round</span>(conservative_margin, <span class="dv">1</span>), <span class="st">"pp"</span>),</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">labelOptions =</span> <span class="fu">labelOptions</span>(</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="fu">list</span>(<span class="st">"font-weight"</span> <span class="ot">=</span> <span class="st">"bold"</span>, <span class="st">"font-size"</span> <span class="ot">=</span> <span class="st">"14px"</span>),</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>      <span class="at">direction =</span> <span class="st">"auto"</span>,</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>      <span class="at">offset =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="dv">10</span>)</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addLegend</span>(</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bottomright"</span>,</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">pal =</span> voting_pal,</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">80</span>, <span class="dv">60</span>),</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Political Lean&lt;br/&gt;(Yoon - Lee)"</span>,</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">opacity =</span> <span class="fl">0.85</span>,</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">labFormat =</span> <span class="fu">labelFormat</span>(<span class="at">suffix =</span> <span class="st">" pp"</span>)</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setView</span>(<span class="at">lng =</span> <span class="fl">127.7</span>, <span class="at">lat =</span> <span class="fl">36.5</span>, <span class="at">zoom =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-voting-map-points" class="cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-voting-map-points-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-02ece1d2567c726b749a" style="width:100%;height:650px;"></div>
+<script type="application/json" data-for="htmlwidget-02ece1d2567c726b749a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[37.5665,35.5384,36.3504,36.4875,37.4138,35.1595,36.6357,37.4563,34.8679,35.7175,35.1796,35.8714,36.5184,37.8228,36.4919,33.489,35.4606],[126.978,129.3114,127.3845,127.2817,127.5183,126.8526,127.4913,126.7052,126.991,127.153,129.0756,128.6014,126.8,128.1555,128.8889,126.4983,128.2132],[16.91697241103016,5.689717821552216,6.451187659820649,3.196463323390053,19.65409315582324,6.594950930657315,6.700610254131916,9.109345628407002,7.51773015388732,7.379909665210454,9.843617221326722,8.424319293305279,7.636500070931273,6.686104994688612,8.838541860636415,4.24388710709625,9.716753001331714],null,null,{"interactive":true,"className":"","stroke":true,"color":"#333333","weight":2,"opacity":1,"fill":true,"fillColor":["#FDD8C3","#F8B697","#FDDDCA","#F8F3EF","#FAEEE7","#154E8A","#FDD5BF","#FBE7DB","#10447D","#1C5C9E","#F09B7A","#890925","#FCD3BC","#F9BA9D","#A21229","#F7F7F7","#EE9777"],"fillOpacity":0.85},null,null,["<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #e74c3c;'>Seoul<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>45.7%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>50.6%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #b2182b;'>+4.8 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>6,439,139<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #e74c3c;'>Ulsan<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>40.8%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>54.4%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #b2182b;'>+13.6 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>  728,390<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #e74c3c;'>Daejeon<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>46.4%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>49.6%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #b2182b;'>+3.1 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>  936,401<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Sejong<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>51.9%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>44.1%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #2166ac;'>-7.8 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>  229,891<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Gyeonggi<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>50.9%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>45.6%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #2166ac;'>-5.3 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>8,691,376<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Gwangju<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>84.8%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>12.7%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #2166ac;'>-72.1 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>  978,601<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #e74c3c;'>Chungbuk<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>45.1%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>50.7%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #b2182b;'>+5.6 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>1,010,209<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Incheon<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>48.9%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>47.1%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #2166ac;'>-1.9 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>1,867,054<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Jeonnam<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>86.1%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>11.4%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #2166ac;'>-74.7 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>1,271,616<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Jeonbuk<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>83%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>14.4%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #2166ac;'>-68.6 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>1,225,419<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #e74c3c;'>Busan<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>38.2%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>58.3%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #b2182b;'>+20.1 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>2,180,178<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #e74c3c;'>Daegu<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>21.6%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>75.1%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #b2182b;'>+53.5 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>1,596,806<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #e74c3c;'>Chungnam<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>45%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>51.1%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #b2182b;'>+6.1 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>1,312,113<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #e74c3c;'>Gangwon<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>41.7%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>54.2%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #b2182b;'>+12.5 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>1,005,840<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #e74c3c;'>Gyeongbuk<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>23.8%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>72.8%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #b2182b;'>+49 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>1,757,696<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #3498db;'>Jeju<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>52.6%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>42.7%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #2166ac;'>-9.9 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>  405,238<\/td><\/tr><\/table><\/div>","<div style='padding: 12px; font-family: Arial; min-width: 280px;'><h3 style='margin: 0 0 10px; color: #2c3e50; border-bottom: 2px solid #e74c3c;'>Gyeongnam<\/h3><table style='width: 100%; font-size: 14px;'><tr style='background: #e3f2fd;'><td style='padding: 6px;'><b>🔵 Lee Jae-myung<\/b><\/td><td style='text-align: right; padding: 6px;'><b>37.4%<\/b><\/td><\/tr><tr style='background: #ffebee;'><td style='padding: 6px;'><b>🔴 Yoon Seok-youl<\/b><\/td><td style='text-align: right; padding: 6px;'><b>58.2%<\/b><\/td><\/tr><tr style='border-top: 2px solid #ddd;'><td style='padding: 6px;'><b>📊 Margin<\/b><\/td><td style='text-align: right; padding: 6px; font-weight: bold; font-size: 16px; color: #b2182b;'>+20.9 pp<\/td><\/tr><tr style='background: #f8f9fa;'><td style='padding: 6px;'>Total Votes<\/td><td style='text-align: right; padding: 6px;'>2,124,344<\/td><\/tr><\/table><\/div>"],null,["Seoul: +4.8pp","Ulsan: +13.6pp","Daejeon: +3.1pp","Sejong: -7.8pp","Gyeonggi: -5.3pp","Gwangju: -72.1pp","Chungbuk: +5.6pp","Incheon: -1.9pp","Jeonnam: -74.7pp","Jeonbuk: -68.6pp","Busan: +20.1pp","Daegu: +53.5pp","Chungnam: +6.1pp","Gangwon: +12.5pp","Gyeongbuk: +49pp","Jeju: -9.9pp","Gyeongnam: +20.9pp"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,-10],"textsize":"10px","textOnly":false,"style":{"font-weight":"bold","font-size":"14px"},"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["#053061 , #053061 0%, #3279B6 14.2857142857143%, #88BEDA 28.5714285714286%, #DCEAF2 42.8571428571429%, #FCE3D5 57.1428571428571%, #F09B7A 71.4285714285714%, #C23C39 85.7142857142857%, #67001F 100%, #67001F "],"labels":["-80 pp","-60 pp","-40 pp","-20 pp","0 pp","20 pp","40 pp","60 pp"],"na_color":null,"na_label":"NA","opacity":0.85,"position":"bottomright","type":"numeric","title":"Political Lean<br/>(Yoon - Lee)","extra":{"p_1":0,"p_n":1},"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[33.489,37.8228],"lng":[126.4983,129.3114]},"setView":[[36.5,127.7],7,[]]},"evals":[],"jsHooks":[]}</script>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-voting-map-points-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.2: 2022 Presidential Election—political lean by province. Blue = progressive (Lee), Red = conservative (Yoon)
+</figcaption>
+</figure>
+</div>
+</div>
+<p><strong>Regional polarization stark</strong>: This map clearly illustrates Korea’s strong political polarization by region in the 2022 presidential election. The southwestern region, including Gwangju, Jeonbuk, and Jeonnam, represents overwhelming large margin for progressive candidates and is expressed in dark blue, indicating a large negative margin compared to conservative candidates. In contrast, the southeastern regions such as Daegu, Gyeongbuk, Gyeongnam, Busan, and Ulsan appear in dark red, revealing a strong conservative dominance. The capital region such as Seoul, Incheon, and Gyeonggi are marked with relatively light colors, indicating that the competition between the two candidates was much fiercer. Since the size of the circle reflects the number of voters, it is possible to visually check the pattern of population concentration around the metropolitan area. Overall, this visualization reveals the east-west regional composition and political division of the Korean election landscape very intuitively.</p>
+<hr>
+</section>
+<section id="q1.-how-unequal-are-regional-income-levels" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="q1.-how-unequal-are-regional-income-levels"><span class="header-section-number">3.2</span> Q1. How unequal are regional income levels?</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>prov <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">province =</span> <span class="fu">fct_reorder</span>(province, income_2023)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> income_2023, <span class="at">y =</span> province)) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">fill =</span> <span class="st">"#999999"</span>) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">comma</span>(income_2023)),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.1</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">4</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontface =</span> <span class="st">"bold"</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">label_comma</span>(),</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.15</span>))</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Regional income inequality across Korea"</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Seoul's income is 29% higher than lowest province"</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Per-capita income (thousands of won)"</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="cn">NULL</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-income-by-province" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-income-by-province-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="results_files/figure-html/fig-income-by-province-1.png" class="img-fluid figure-img" width="1056">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-income-by-province-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.3: Per-capita income ranges from ₩22.8M (Gyeongnam) to ₩29.4M (Seoul).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The bar graph shows a clear disparities in the level of per capita income between 17 cities and provinces across the Korea. Seoul stand out as the highest income at about ₩29.4 million, while Gyeongnam has the lowest income at about ₩22.8 million, reaching a gap of about 29%. High income regions such as Ulsan, Daejeon, Sejong, and Gyeonggi are located at the top of the distribution, reflecting the concentration of economic activity in urban areas and a relatively higher paying industries. In contrast, several rural provinces, such as Gangwon, Gyeongbuk, Jeju, and Gyeongnam, are clustered in the lower part, indicating the economic hierarchy between regions. This continuous pattern of income decline is not just a coincidence but due to structural differences between metropolitan and industrial centers and the surrounding areas, showing how Korea’s spatial economic structure is reflected in the income gap by region.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cor_val <span class="ot">&lt;-</span> <span class="fu">cor</span>(prov<span class="sc">$</span>income_2023, prov<span class="sc">$</span>grdp_2023)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>prov <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> income_2023, <span class="at">y =</span> grdp_2023)) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">size =</span> lee_votes <span class="sc">+</span> yoon_votes, <span class="at">color =</span> conservative_margin),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.7</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">color =</span> <span class="st">"darkblue"</span>, </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"lightblue"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> province),</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">3.5</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">max.overlaps =</span> <span class="dv">20</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Total votes"</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">label_comma</span>(),</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">12</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradient2</span>(</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">low =</span> <span class="st">"#4a90e2"</span>,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">mid =</span> <span class="st">"gray80"</span>,</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">high =</span> <span class="st">"#e74c3c"</span>,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">midpoint =</span> <span class="dv">0</span>,</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Conservative</span><span class="sc">\n</span><span class="st">margin"</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> <span class="fu">label_comma</span>()) <span class="sc">+</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_comma</span>()) <span class="sc">+</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"GRDP vs. Income: Production and living standards diverge"</span>,</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">sprintf</span>(<span class="st">"Correlation: r = %.2f"</span>, cor_val),</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Per-capita income (thousands of won)"</span>,</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Per-capita GRDP (thousands of won)"</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-grdp-vs-income" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-grdp-vs-income-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="results_files/figure-html/fig-grdp-vs-income-1.png" class="img-fluid figure-img" width="1056">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-grdp-vs-income-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.4: GRDP and income show a modest positive correlation (r = 0.46).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The scatterplot compares the relationship between per-capita GRDP and per-capita income for each province, and shows that the regional “production level” and “living standard” only partially coincide. Overall, the higher the income, the higher the GRDP, but regions located large above the trend line, such as Ulsan and Chungnam, are representative examples of inconsistencies in which industrial production is very high compared to the income level of the residents. Conversely, regions with relatively low production scale, such as Gwangju and Jeonbuk, are located below the trend line, suggesting more modest production relative to income. In addition, the bubble size reflects the total number of votes in the region, and the metropolitan areas such as Seoul and Gyeonggi province appear large, and the color represents the degree of dominance of the conservative vote, so political orientation by region is visualized. Through this plot, Korea’s economic geography cannot be reduced to a single dimension that some regions are “production rich” without being equally “income rich,” and these differences interact with both population size and political orientation.</p>
+<hr>
+</section>
+<section id="q2.-how-stark-is-electoral-polarization" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="q2.-how-stark-is-electoral-polarization"><span class="header-section-number">3.3</span> Q2. How stark is electoral polarization?</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>prov <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(province, lee_pct, yoon_pct) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(lee_pct, yoon_pct),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"candidate"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"vote_pct"</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">candidate =</span> <span class="fu">recode</span>(</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      candidate,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">lee_pct =</span> <span class="st">"Lee Jae-myung (Progressive)"</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">yoon_pct =</span> <span class="st">"Yoon Seok-youl (Conservative)"</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">province =</span> <span class="fu">fct_reorder</span>(province, vote_pct, <span class="at">.fun =</span> <span class="cf">function</span>(x) x[<span class="dv">1</span>])</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> province, <span class="at">y =</span> vote_pct, <span class="at">fill =</span> candidate)) <span class="sc">+</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>, <span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">50</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Lee Jae-myung (Progressive)"</span> <span class="ot">=</span> <span class="st">"#4a90e2"</span>,</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Yoon Seok-youl (Conservative)"</span> <span class="ot">=</span> <span class="st">"#e74c3c"</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_percent</span>(<span class="at">scale =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Not a single province approached a 50-50 split"</span>,</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Vote share (%)"</span>,</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="cn">NULL</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"top"</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-vote-shares" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vote-shares-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="results_files/figure-html/fig-vote-shares-1.png" class="img-fluid figure-img" width="1056">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vote-shares-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.5: Every province leaned decisively toward one candidate.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The bar chart compares the vote rates of 17 cities and provinces nationwide in the 2022 presidential election, and highlights how clear the political polarization of Korea by region is. A 50% baseline in the center of the graph shows that no region showed a competitive structure close to 50:50, and all cities and provinces are clearly inclined toward one candidate. Honam region (Jeonnam, Gwangju, Jeonbuk) overwhelmingly supported progressive candidates, while Yeongnam region (Daegu, Gyeongbuk, and Gyeongnam) showed high support for conservative candidates. Even in the capital area such as Seoul, Incheon, and Gyeonggi Province, it seems to be balanced, but in reality, there is a clear difference. These results visually confirm that Korea’s regional political orientation is not an accidental change, but is structurally fixed, and that each region has a distinct ideological direction.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>prov <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">province =</span> <span class="fu">fct_reorder</span>(province, conservative_margin)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> province, <span class="at">y =</span> conservative_margin, <span class="at">fill =</span> conservative_win)) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%+.1f"</span>, conservative_margin)),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">hjust =</span> <span class="fu">ifelse</span>(prov<span class="sc">$</span>conservative_margin <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">1.1</span>),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">3.5</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontface =</span> <span class="st">"bold"</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Progressive-leaning"</span> <span class="ot">=</span> <span class="st">"#4a90e2"</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Conservative-leaning"</span> <span class="ot">=</span> <span class="st">"#e74c3c"</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">suffix =</span> <span class="st">" pp"</span>)) <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"129-point spread dwarfs the 0.73pp national margin"</span>,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Conservative advantage (percentage points)"</span>,</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="cn">NULL</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"top"</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-conservative-margin" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-conservative-margin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="results_files/figure-html/fig-conservative-margin-1.png" class="img-fluid figure-img" width="1056">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-conservative-margin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.6: 129 percentage point spread from Jeonnam (-75pp) to Daegu (+54pp).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The chart visualizes the ‘conservative vote advantage’ of each region in the 2022 presidential election, and shows at a glance how extremely wide ideological divide. From Jeonnam (–74.7pp) to Daegu (+53.5pp), there is a total gap of 129 points, and it can be seen that there was virtually no competitive region as neither single region was close to zero. Honam (Jeonnam, Gwangju, and Jeonbuk) is the strongest progressive dominant region in the country, while Yeongnam (Daegu, Gyeongbuk, and Gyeongnam) is the strongest conservative dominant region. Although the capital areas such as Seoul, Gyeonggi, and Incheon are relatively close to the center, there are still clear deviations. Overall, this visualization clearly demonstrates that Korea’s election landscape is formed by structural regional alignment, not accidental fluctuations.</p>
+<hr>
+</section>
+<section id="q3.-does-higher-income-predict-conservative-voting" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="q3.-does-higher-income-predict-conservative-voting"><span class="header-section-number">3.4</span> Q3. Does higher income predict conservative voting?</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cor_income <span class="ot">&lt;-</span> <span class="fu">cor</span>(prov<span class="sc">$</span>income_2023, prov<span class="sc">$</span>conservative_margin)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>prov <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> income_2023, <span class="at">y =</span> conservative_margin)) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">color =</span> <span class="st">"darkblue"</span>, </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"lightblue"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">size =</span> lee_votes <span class="sc">+</span> yoon_votes, <span class="at">color =</span> conservative_margin),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.7</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> province),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">3.5</span>,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">max.overlaps =</span> <span class="dv">20</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradient2</span>(</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">low =</span> <span class="st">"#4a90e2"</span>,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">mid =</span> <span class="st">"gray80"</span>,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">high =</span> <span class="st">"#e74c3c"</span>,</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">midpoint =</span> <span class="dv">0</span>,</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">guide =</span> <span class="st">"none"</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Total votes"</span>,</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">label_comma</span>(),</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">12</span>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> <span class="fu">label_comma</span>()) <span class="sc">+</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">suffix =</span> <span class="st">" pp"</span>)) <span class="sc">+</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">sprintf</span>(<span class="st">"Income weakly predicts voting (r = %.2f)"</span>, cor_income),</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Per-capita income (thousands of won)"</span>,</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Conservative margin (Yoon % - Lee %)"</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-income-vs-conservatism" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-income-vs-conservatism-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="results_files/figure-html/fig-income-vs-conservatism-1.png" class="img-fluid figure-img" width="1056">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-income-vs-conservatism-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.7: Income weakly predicts voting
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The scatterplot examines whether region with higher per capita income tend to vote more conservative, revealing that there is only a very weak relationship overall. The LOESS curve shows a weak increase in conservative tendencies in Seoul and Ulsan, where the income is highest, but the overall pattern is difficult to be linear. Jeonnam, Gwangju, and Jeonbuk, which have the middle income level, show strong progressive tendencies, and some low-income regions appear conservatively, forming a U-shaped distribution. This U-shapped pattern suggests that korea’s income levels do not consistently explain political orientation, and that regional identity and historical political structure have a greater influence on voting behavior. In addition, the size of the bubble visually reveals the high election influence of the capital region (Seoul and Gyeonggi) by reflecting the size of the population.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>prov <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">income_q =</span> <span class="fu">cut</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      income_2023,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">breaks =</span> <span class="fu">quantile</span>(income_2023, <span class="at">probs =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.25</span>)),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Q1 (Lowest)"</span>, <span class="st">"Q2"</span>, <span class="st">"Q3"</span>, <span class="st">"Q4 (Highest)"</span>),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">include.lowest =</span> <span class="cn">TRUE</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> income_q, <span class="at">y =</span> conservative_margin)) <span class="sc">+</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"lightgray"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>, <span class="at">width =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">size =</span> lee_votes <span class="sc">+</span> yoon_votes, <span class="at">color =</span> conservative_margin),</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="fl">0.15</span>,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.7</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradient2</span>(</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">low =</span> <span class="st">"#4a90e2"</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">mid =</span> <span class="st">"gray80"</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">high =</span> <span class="st">"#e74c3c"</span>,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">midpoint =</span> <span class="dv">0</span>,</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">guide =</span> <span class="st">"none"</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Total votes"</span>,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">label_comma</span>(),</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">10</span>)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">suffix =</span> <span class="st">" pp"</span>)) <span class="sc">+</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Conservative vote margins across four per-capita income quartiles"</span>,</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Per-capita income quartile"</span>,</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Conservative margin"</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-income-quartiles" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-income-quartiles-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="results_files/figure-html/fig-income-quartiles-1.png" class="img-fluid figure-img" width="1056">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-income-quartiles-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.8: Conservative vote margins across four per-capita income quartiles.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The boxplot reveals that the relationship between income and conservative tendencies is not a linear pattern in which higher income simply leads to stronger conservatism. In particular, in the lowest income quartile (Q1), the most conservative regions such as Daegu, Gyeongbuk, and Gyeongnam are concentrated, showing a strong conservative tendency. In contrast, the middle income group (Q2, Q3) has the largest distribution from strong progressive regions such as Jeonnam, Gwangju, and Jeonbuk to conservative regions, and thus has great ideological diversity. The highest income quartile (Q4) shows a weak conservative tendency on average, but is much weaker than the strong conservative advantage shown in Q1. This U-shaped pattern suggests that the simply interpretation that ‘the higher the income, the more conservative’ is not established, that the lowest and highest income groups show conservative tendencies for different reasons, and that the middle income group has the most mixed ideological structure, including the progressive and strong regions.</p>
+<hr>
+</section>
+<section id="q4.-does-grdp-predict-politics-like-income-does" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="q4.-does-grdp-predict-politics-like-income-does"><span class="header-section-number">3.5</span> Q4. Does GRDP predict politics like income does?</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cor_grdp <span class="ot">&lt;-</span> <span class="fu">cor</span>(prov<span class="sc">$</span>grdp_2023, prov<span class="sc">$</span>conservative_margin)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>prov <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> grdp_2023, <span class="at">y =</span> conservative_margin)) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">color =</span> <span class="st">"darkblue"</span>, </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"lightblue"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">size =</span> lee_votes <span class="sc">+</span> yoon_votes, <span class="at">color =</span> conservative_margin),</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.7</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> province),</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">3.5</span>,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">max.overlaps =</span> <span class="dv">20</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradient2</span>(</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">low =</span> <span class="st">"#4a90e2"</span>,</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">mid =</span> <span class="st">"gray80"</span>,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">high =</span> <span class="st">"#e74c3c"</span>,</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">midpoint =</span> <span class="dv">0</span>,</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">guide =</span> <span class="st">"none"</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Total votes"</span>,</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">label_comma</span>(),</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">12</span>)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> <span class="fu">label_comma</span>()) <span class="sc">+</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">suffix =</span> <span class="st">" pp"</span>)) <span class="sc">+</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">sprintf</span>(<span class="st">"GRDP weakly predicts voting (r = %.2f)"</span>, cor_grdp),</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Per-capita GRDP (thousands of won)"</span>,</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Conservative margin"</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-grdp-vs-conservatism" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-grdp-vs-conservatism-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="results_files/figure-html/fig-grdp-vs-conservatism-1.png" class="img-fluid figure-img" width="1056">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-grdp-vs-conservatism-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.9: GRDP weakly predicts voting.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The scatterplot shows that per-capita GRDP has almost no systematic relationship with conservative voting, indicating that a region’s economic output does not translate directly into political preference. The LOESS curve is generally flat and shows only slight local fluctuations, and the correlation coefficient is also very weak (r ≈ 0.06). High GRDP provinces such as Ulsan do not consistently vote conservative, while low-GRDP regions such as Daegu exhibit strong conservative tendencies, and patterns that contradict a simple “wealthier regions vote conservative” explanation. This emphasizes that both income and GRDP have very weak power to explain voting propensity, and it is difficult to understand regional political propensity only by economic factors. This suggests that Korea’s voting pattern is more affected by regional identity and historical factors than by economic level.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>prov <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">grdp_q =</span> <span class="fu">cut</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      grdp_2023,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">breaks =</span> <span class="fu">quantile</span>(grdp_2023, <span class="at">probs =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.25</span>)),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Q1 (Lowest)"</span>, <span class="st">"Q2"</span>, <span class="st">"Q3"</span>, <span class="st">"Q4 (Highest)"</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">include.lowest =</span> <span class="cn">TRUE</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> grdp_q, <span class="at">y =</span> conservative_margin)) <span class="sc">+</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"lightgray"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>, <span class="at">width =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">size =</span> lee_votes <span class="sc">+</span> yoon_votes, <span class="at">color =</span> conservative_margin),</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="fl">0.15</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.7</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradient2</span>(</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">low =</span> <span class="st">"#4a90e2"</span>,</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">mid =</span> <span class="st">"gray80"</span>,</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">high =</span> <span class="st">"#e74c3c"</span>,</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">midpoint =</span> <span class="dv">0</span>,</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">guide =</span> <span class="st">"none"</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Total votes"</span>,</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">label_comma</span>(),</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">10</span>)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">suffix =</span> <span class="st">" pp"</span>)) <span class="sc">+</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Conservative vote margins across four per-capita GRDP quartiles"</span>,</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Per-capita GRDP quartile"</span>,</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Conservative margin"</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-grdp-quartiles" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-grdp-quartiles-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="results_files/figure-html/fig-grdp-quartiles-1.png" class="img-fluid figure-img" width="1056">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-grdp-quartiles-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.10: Conservative vote margins across four per-capita GRDP quartiles.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The boxplot compares the gap between conservative votes by dividing the per-capita GRDP into four quartiles, and shows that there is no clear relationship between the GRDP level and conservative tendency. Even within the lowest GRDP group (Q1), strong conservative regions (Daegu and Gyeongbuk) and strong progressive regions (Gwangju and Jeonnam) exist at the same time, and there is no consistent pattern in Q2 and Q3 due to a mixture of conservative and progressive tendencies. Even in Q4, which has the highest GRDP, the conservative vote rate does not show a constant increase or decrease, and the distribution range between regions is very diverse. Overall, since all four quartiles do not show significant changes in conservative tendencies or predictable directions, the regional economic output level (GRDP) has little influence in explaining Korea’s regional political orientation, and the political pattern supports the conclusion that it is more determined by regional identity and historical factors than by economic structure.</p>
+</section>
+<section id="q5.-does-economic-structure-predict-regional-voting" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="q5.-does-economic-structure-predict-regional-voting"><span class="header-section-number">3.6</span> Q5. Does Economic Structure Predict Regional Voting?</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>prov <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">province =</span> <span class="fu">fct_reorder</span>(province, grdp_income_ratio)) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> province, <span class="at">y =</span> grdp_income_ratio)) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">xend =</span> province, <span class="at">y =</span> <span class="dv">1</span>, <span class="at">yend =</span> grdp_income_ratio),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"gray60"</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> conservative_margin, <span class="at">size =</span> lee_votes <span class="sc">+</span> yoon_votes),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"solid"</span>, </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradient2</span>(</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">low =</span> <span class="st">"#4a90e2"</span>, <span class="at">mid =</span> <span class="st">"#95a5a6"</span>, <span class="at">high =</span> <span class="st">"#e74c3c"</span>,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">midpoint =</span> <span class="dv">0</span>,</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Conservative</span><span class="sc">\n</span><span class="st">Margin (pp)"</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">suffix =</span> <span class="st">""</span>)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Total Votes"</span>,</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">label_comma</span>(),</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">12</span>)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="fl">2.2</span>, <span class="fl">0.2</span>)) <span class="sc">+</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Production vs. Consumption Economies Show No Clear Pattern"</span>,</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"GRDP-to-income ratios range from 1.1 to 2.0, but both conservative and progressive strongholds appear across the spectrum."</span>,</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"GRDP-to-Income Ratio"</span>,</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Ratio = 1 means GRDP equals income; &gt;1 means production exceeds income. Source: KOSIS &amp; NEC"</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">20</span>),</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>, <span class="at">color =</span> <span class="st">"gray30"</span>),</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-grdp-income-ratio" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-grdp-income-ratio-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="results_files/figure-html/fig-grdp-income-ratio-1.png" class="img-fluid figure-img" width="1056">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-grdp-income-ratio-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.11: GRDP-to-income ratios vary widely, but conservative margins show no systematic pattern.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This lollipop chart compares the GRDP-income ratio of each region (the structural indicator of production-oriented economy vs.&nbsp;consumption-oriented economy) with the gap in the number of conservative votes. The ratio is spread out from about 1.1 to 2.0, but strong conservative areas and strong progressive areas are mixed and distributed throughout the section. For example, Daegu and Gyeongbuk, which have very strong conservative tendencies, and Gwangju and Jeonnam, which have very strong progressive tendencies, are all located near 1.3 to 1.5, and Ulsan and Chungnam, which have high ratios, are also close to the middle level rather than overwhelming conservatism. The fact that there is no clear gradient of color (conservative gap) along the vertical axis means that even regions with similar economic structures may have very different political tendencies. Along with the previous income and GRDP analysis, neither income level nor production structure strongly explain Korea’s regional voting patterns, supporting the interpretation that regional identity and historical factors play a much more important role.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -587,7 +1314,7 @@ ul.task-list li input[type="checkbox"] {
     </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/Jaejae1107/KoreanPolarization/edit/main/results.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Jaejae1107/KoreanPolarization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Jaejae1107/KoreanPolarization/edit/main/results.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Jaejae1107/KoreanPolarization/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
